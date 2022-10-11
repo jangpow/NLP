@@ -1,0 +1,867 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "collapsed_sections": [],
+      "authorship_tag": "ABX9TyPUuaooRF0Da3lpKNSxevxq",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    },
+    "accelerator": "GPU"
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/jangpow/SW_academy_NLP/blob/main/KoNLPy\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "iEPdGw3-hdim"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "KoNLPy 라이브러리 설치"
+      ],
+      "metadata": {
+        "id": "GbA3ues2hif7"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!apt-get update\n",
+        "!apt-get install g++ openjdk-8-jdk python-dev python3-dev\n",
+        "!pip install JPype1-py3\n",
+        "!pip install konlpy\n",
+        "\n",
+        "#knoply는 java의 jdk Jpype가 설치되지 않으면 깔리지가 않는다."
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bg1q48XghlJ5",
+        "outputId": "44339186-d1f8-4b15-d1c0-27172eedadf0"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Get:1 https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/ InRelease [3,626 B]\n",
+            "Ign:2 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64  InRelease\n",
+            "Hit:3 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64  InRelease\n",
+            "Hit:4 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64  Release\n",
+            "Get:5 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]\n",
+            "Hit:6 http://archive.ubuntu.com/ubuntu bionic InRelease\n",
+            "Get:8 http://ppa.launchpad.net/c2d4u.team/c2d4u4.0+/ubuntu bionic InRelease [15.9 kB]\n",
+            "Get:9 http://archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]\n",
+            "Hit:10 http://ppa.launchpad.net/cran/libgit2/ubuntu bionic InRelease\n",
+            "Get:11 http://archive.ubuntu.com/ubuntu bionic-backports InRelease [83.3 kB]\n",
+            "Get:12 http://security.ubuntu.com/ubuntu bionic-security/restricted amd64 Packages [1,183 kB]\n",
+            "Hit:13 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu bionic InRelease\n",
+            "Get:14 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [2,328 kB]\n",
+            "Hit:15 http://ppa.launchpad.net/graphics-drivers/ppa/ubuntu bionic InRelease\n",
+            "Get:16 http://ppa.launchpad.net/c2d4u.team/c2d4u4.0+/ubuntu bionic/main Sources [2,164 kB]\n",
+            "Get:17 http://security.ubuntu.com/ubuntu bionic-security/main amd64 Packages [3,005 kB]\n",
+            "Get:18 http://security.ubuntu.com/ubuntu bionic-security/universe amd64 Packages [1,550 kB]\n",
+            "Get:19 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [3,436 kB]\n",
+            "Get:20 http://archive.ubuntu.com/ubuntu bionic-updates/restricted amd64 Packages [1,223 kB]\n",
+            "Get:21 http://ppa.launchpad.net/c2d4u.team/c2d4u4.0+/ubuntu bionic/main amd64 Packages [1,109 kB]\n",
+            "Fetched 16.3 MB in 5s (3,238 kB/s)\n",
+            "Reading package lists... Done\n",
+            "Reading package lists... Done\n",
+            "Building dependency tree       \n",
+            "Reading state information... Done\n",
+            "python-dev is already the newest version (2.7.15~rc1-1).\n",
+            "g++ is already the newest version (4:7.4.0-1ubuntu2.3).\n",
+            "g++ set to manually installed.\n",
+            "python3-dev is already the newest version (3.6.7-1~18.04).\n",
+            "python3-dev set to manually installed.\n",
+            "The following package was automatically installed and is no longer required:\n",
+            "  libnvidia-common-460\n",
+            "Use 'apt autoremove' to remove it.\n",
+            "The following additional packages will be installed:\n",
+            "  fonts-dejavu-core fonts-dejavu-extra libatk-wrapper-java\n",
+            "  libatk-wrapper-java-jni libgail-common libgail18 libgtk2.0-0 libgtk2.0-bin\n",
+            "  libgtk2.0-common libxxf86dga1 openjdk-8-jdk-headless openjdk-8-jre\n",
+            "  openjdk-8-jre-headless x11-utils\n",
+            "Suggested packages:\n",
+            "  gvfs openjdk-8-demo openjdk-8-source visualvm libnss-mdns\n",
+            "  fonts-ipafont-gothic fonts-ipafont-mincho fonts-wqy-microhei\n",
+            "  fonts-wqy-zenhei fonts-indic mesa-utils\n",
+            "The following NEW packages will be installed:\n",
+            "  fonts-dejavu-core fonts-dejavu-extra libatk-wrapper-java\n",
+            "  libatk-wrapper-java-jni libgail-common libgail18 libgtk2.0-0 libgtk2.0-bin\n",
+            "  libgtk2.0-common libxxf86dga1 openjdk-8-jdk openjdk-8-jdk-headless\n",
+            "  openjdk-8-jre openjdk-8-jre-headless x11-utils\n",
+            "0 upgraded, 15 newly installed, 0 to remove and 22 not upgraded.\n",
+            "Need to get 46.0 MB of archives.\n",
+            "After this operation, 166 MB of additional disk space will be used.\n",
+            "Get:1 http://archive.ubuntu.com/ubuntu bionic/main amd64 libxxf86dga1 amd64 2:1.1.4-1 [13.7 kB]\n",
+            "Get:2 http://archive.ubuntu.com/ubuntu bionic/main amd64 fonts-dejavu-core all 2.37-1 [1,041 kB]\n",
+            "Get:3 http://archive.ubuntu.com/ubuntu bionic/main amd64 fonts-dejavu-extra all 2.37-1 [1,953 kB]\n",
+            "Get:4 http://archive.ubuntu.com/ubuntu bionic/main amd64 x11-utils amd64 7.7+3build1 [196 kB]\n",
+            "Get:5 http://archive.ubuntu.com/ubuntu bionic/main amd64 libatk-wrapper-java all 0.33.3-20ubuntu0.1 [34.7 kB]\n",
+            "Get:6 http://archive.ubuntu.com/ubuntu bionic/main amd64 libatk-wrapper-java-jni amd64 0.33.3-20ubuntu0.1 [28.3 kB]\n",
+            "Get:7 http://archive.ubuntu.com/ubuntu bionic/main amd64 libgtk2.0-common all 2.24.32-1ubuntu1 [125 kB]\n",
+            "Get:8 http://archive.ubuntu.com/ubuntu bionic/main amd64 libgtk2.0-0 amd64 2.24.32-1ubuntu1 [1,769 kB]\n",
+            "Get:9 http://archive.ubuntu.com/ubuntu bionic/main amd64 libgail18 amd64 2.24.32-1ubuntu1 [14.2 kB]\n",
+            "Get:10 http://archive.ubuntu.com/ubuntu bionic/main amd64 libgail-common amd64 2.24.32-1ubuntu1 [112 kB]\n",
+            "Get:11 http://archive.ubuntu.com/ubuntu bionic/main amd64 libgtk2.0-bin amd64 2.24.32-1ubuntu1 [7,536 B]\n",
+            "Get:12 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openjdk-8-jre-headless amd64 8u342-b07-0ubuntu1~18.04 [28.3 MB]\n",
+            "Get:13 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openjdk-8-jre amd64 8u342-b07-0ubuntu1~18.04 [69.6 kB]\n",
+            "Get:14 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openjdk-8-jdk-headless amd64 8u342-b07-0ubuntu1~18.04 [8,300 kB]\n",
+            "Get:15 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 openjdk-8-jdk amd64 8u342-b07-0ubuntu1~18.04 [4,032 kB]\n",
+            "Fetched 46.0 MB in 5s (9,883 kB/s)\n",
+            "Selecting previously unselected package libxxf86dga1:amd64.\n",
+            "(Reading database ... 123934 files and directories currently installed.)\n",
+            "Preparing to unpack .../00-libxxf86dga1_2%3a1.1.4-1_amd64.deb ...\n",
+            "Unpacking libxxf86dga1:amd64 (2:1.1.4-1) ...\n",
+            "Selecting previously unselected package fonts-dejavu-core.\n",
+            "Preparing to unpack .../01-fonts-dejavu-core_2.37-1_all.deb ...\n",
+            "Unpacking fonts-dejavu-core (2.37-1) ...\n",
+            "Selecting previously unselected package fonts-dejavu-extra.\n",
+            "Preparing to unpack .../02-fonts-dejavu-extra_2.37-1_all.deb ...\n",
+            "Unpacking fonts-dejavu-extra (2.37-1) ...\n",
+            "Selecting previously unselected package x11-utils.\n",
+            "Preparing to unpack .../03-x11-utils_7.7+3build1_amd64.deb ...\n",
+            "Unpacking x11-utils (7.7+3build1) ...\n",
+            "Selecting previously unselected package libatk-wrapper-java.\n",
+            "Preparing to unpack .../04-libatk-wrapper-java_0.33.3-20ubuntu0.1_all.deb ...\n",
+            "Unpacking libatk-wrapper-java (0.33.3-20ubuntu0.1) ...\n",
+            "Selecting previously unselected package libatk-wrapper-java-jni:amd64.\n",
+            "Preparing to unpack .../05-libatk-wrapper-java-jni_0.33.3-20ubuntu0.1_amd64.deb ...\n",
+            "Unpacking libatk-wrapper-java-jni:amd64 (0.33.3-20ubuntu0.1) ...\n",
+            "Selecting previously unselected package libgtk2.0-common.\n",
+            "Preparing to unpack .../06-libgtk2.0-common_2.24.32-1ubuntu1_all.deb ...\n",
+            "Unpacking libgtk2.0-common (2.24.32-1ubuntu1) ...\n",
+            "Selecting previously unselected package libgtk2.0-0:amd64.\n",
+            "Preparing to unpack .../07-libgtk2.0-0_2.24.32-1ubuntu1_amd64.deb ...\n",
+            "Unpacking libgtk2.0-0:amd64 (2.24.32-1ubuntu1) ...\n",
+            "Selecting previously unselected package libgail18:amd64.\n",
+            "Preparing to unpack .../08-libgail18_2.24.32-1ubuntu1_amd64.deb ...\n",
+            "Unpacking libgail18:amd64 (2.24.32-1ubuntu1) ...\n",
+            "Selecting previously unselected package libgail-common:amd64.\n",
+            "Preparing to unpack .../09-libgail-common_2.24.32-1ubuntu1_amd64.deb ...\n",
+            "Unpacking libgail-common:amd64 (2.24.32-1ubuntu1) ...\n",
+            "Selecting previously unselected package libgtk2.0-bin.\n",
+            "Preparing to unpack .../10-libgtk2.0-bin_2.24.32-1ubuntu1_amd64.deb ...\n",
+            "Unpacking libgtk2.0-bin (2.24.32-1ubuntu1) ...\n",
+            "Selecting previously unselected package openjdk-8-jre-headless:amd64.\n",
+            "Preparing to unpack .../11-openjdk-8-jre-headless_8u342-b07-0ubuntu1~18.04_amd64.deb ...\n",
+            "Unpacking openjdk-8-jre-headless:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "Selecting previously unselected package openjdk-8-jre:amd64.\n",
+            "Preparing to unpack .../12-openjdk-8-jre_8u342-b07-0ubuntu1~18.04_amd64.deb ...\n",
+            "Unpacking openjdk-8-jre:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "Selecting previously unselected package openjdk-8-jdk-headless:amd64.\n",
+            "Preparing to unpack .../13-openjdk-8-jdk-headless_8u342-b07-0ubuntu1~18.04_amd64.deb ...\n",
+            "Unpacking openjdk-8-jdk-headless:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "Selecting previously unselected package openjdk-8-jdk:amd64.\n",
+            "Preparing to unpack .../14-openjdk-8-jdk_8u342-b07-0ubuntu1~18.04_amd64.deb ...\n",
+            "Unpacking openjdk-8-jdk:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "Setting up libgtk2.0-common (2.24.32-1ubuntu1) ...\n",
+            "Setting up fonts-dejavu-core (2.37-1) ...\n",
+            "Setting up libxxf86dga1:amd64 (2:1.1.4-1) ...\n",
+            "Setting up fonts-dejavu-extra (2.37-1) ...\n",
+            "Setting up openjdk-8-jre-headless:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/orbd to provide /usr/bin/orbd (orbd) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/servertool to provide /usr/bin/servertool (servertool) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/tnameserv to provide /usr/bin/tnameserv (tnameserv) in auto mode\n",
+            "Setting up libgtk2.0-0:amd64 (2.24.32-1ubuntu1) ...\n",
+            "Setting up libgail18:amd64 (2.24.32-1ubuntu1) ...\n",
+            "Setting up openjdk-8-jdk-headless:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/idlj to provide /usr/bin/idlj (idlj) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/wsimport to provide /usr/bin/wsimport (wsimport) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/jsadebugd to provide /usr/bin/jsadebugd (jsadebugd) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/native2ascii to provide /usr/bin/native2ascii (native2ascii) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/javah to provide /usr/bin/javah (javah) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/clhsdb to provide /usr/bin/clhsdb (clhsdb) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/xjc to provide /usr/bin/xjc (xjc) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/hsdb to provide /usr/bin/hsdb (hsdb) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/schemagen to provide /usr/bin/schemagen (schemagen) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/extcheck to provide /usr/bin/extcheck (extcheck) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/jhat to provide /usr/bin/jhat (jhat) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/wsgen to provide /usr/bin/wsgen (wsgen) in auto mode\n",
+            "Setting up x11-utils (7.7+3build1) ...\n",
+            "Setting up libgail-common:amd64 (2.24.32-1ubuntu1) ...\n",
+            "Setting up libatk-wrapper-java (0.33.3-20ubuntu0.1) ...\n",
+            "Setting up libgtk2.0-bin (2.24.32-1ubuntu1) ...\n",
+            "Setting up libatk-wrapper-java-jni:amd64 (0.33.3-20ubuntu0.1) ...\n",
+            "Setting up openjdk-8-jre:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/policytool to provide /usr/bin/policytool (policytool) in auto mode\n",
+            "Setting up openjdk-8-jdk:amd64 (8u342-b07-0ubuntu1~18.04) ...\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/appletviewer to provide /usr/bin/appletviewer (appletviewer) in auto mode\n",
+            "update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/jconsole to provide /usr/bin/jconsole (jconsole) in auto mode\n",
+            "Processing triggers for man-db (2.8.3-2ubuntu0.1) ...\n",
+            "Processing triggers for hicolor-icon-theme (0.17-2) ...\n",
+            "Processing triggers for fontconfig (2.12.6-0ubuntu2) ...\n",
+            "Processing triggers for mime-support (3.60ubuntu1) ...\n",
+            "Processing triggers for libc-bin (2.27-3ubuntu1.6) ...\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting JPype1-py3\n",
+            "  Downloading JPype1-py3-0.5.5.4.tar.gz (88 kB)\n",
+            "\u001b[K     |████████████████████████████████| 88 kB 7.2 MB/s \n",
+            "\u001b[?25hBuilding wheels for collected packages: JPype1-py3\n",
+            "  Building wheel for JPype1-py3 (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for JPype1-py3: filename=JPype1_py3-0.5.5.4-cp37-cp37m-linux_x86_64.whl size=2698672 sha256=9b6f330d0df8ad9037216f75627c2f524d02be53de98c96bcef5191376d0a8d1\n",
+            "  Stored in directory: /root/.cache/pip/wheels/e7/d1/09/f55dca0203b0691945bdf0f63d486a0b4d4e5ec4bd78a2502e\n",
+            "Successfully built JPype1-py3\n",
+            "Installing collected packages: JPype1-py3\n",
+            "Successfully installed JPype1-py3-0.5.5.4\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting konlpy\n",
+            "  Downloading konlpy-0.6.0-py2.py3-none-any.whl (19.4 MB)\n",
+            "\u001b[K     |████████████████████████████████| 19.4 MB 1.4 MB/s \n",
+            "\u001b[?25hCollecting JPype1>=0.7.0\n",
+            "  Downloading JPype1-1.4.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl (453 kB)\n",
+            "\u001b[K     |████████████████████████████████| 453 kB 59.2 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: numpy>=1.6 in /usr/local/lib/python3.7/dist-packages (from konlpy) (1.21.6)\n",
+            "Requirement already satisfied: lxml>=4.1.0 in /usr/local/lib/python3.7/dist-packages (from konlpy) (4.9.1)\n",
+            "Requirement already satisfied: typing-extensions in /usr/local/lib/python3.7/dist-packages (from JPype1>=0.7.0->konlpy) (4.1.1)\n",
+            "Installing collected packages: JPype1, konlpy\n",
+            "Successfully installed JPype1-1.4.0 konlpy-0.6.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!wget https://raw.githubusercontent.com/e9t/nsmc/master/ratings.txt -O ratings.txt"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vx5SnJMUh0Gb",
+        "outputId": "721e0a6b-58ae-431e-9859-ce8199328aa4"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--2022-10-11 04:32:52--  https://raw.githubusercontent.com/e9t/nsmc/master/ratings.txt\n",
+            "Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...\n",
+            "Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.\n",
+            "HTTP request sent, awaiting response... 200 OK\n",
+            "Length: 19515078 (19M) [text/plain]\n",
+            "Saving to: ‘ratings.txt’\n",
+            "\n",
+            "ratings.txt         100%[===================>]  18.61M  --.-KB/s    in 0.05s   \n",
+            "\n",
+            "2022-10-11 04:32:55 (390 MB/s) - ‘ratings.txt’ saved [19515078/19515078]\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "train_data = pd.read_table('ratings.txt')"
+      ],
+      "metadata": {
+        "id": "FPyi_Y95judR"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "train_data"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 423
+        },
+        "id": "ON7NOmGakJgv",
+        "outputId": "44bdb790-ea6e-4b31-d465-1027693cfe3d"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "              id                                           document  label\n",
+              "0        8112052                                어릴때보고 지금다시봐도 재밌어요ㅋㅋ      1\n",
+              "1        8132799  디자인을 배우는 학생으로, 외국디자이너와 그들이 일군 전통을 통해 발전해가는 문화산...      1\n",
+              "2        4655635               폴리스스토리 시리즈는 1부터 뉴까지 버릴께 하나도 없음.. 최고.      1\n",
+              "3        9251303  와.. 연기가 진짜 개쩔구나.. 지루할거라고 생각했는데 몰입해서 봤다.. 그래 이런...      1\n",
+              "4       10067386                        안개 자욱한 밤하늘에 떠 있는 초승달 같은 영화.      1\n",
+              "...          ...                                                ...    ...\n",
+              "199995   8963373                                     포켓 몬스터 짜가 ㅡㅡ;;      0\n",
+              "199996   3302770                                              쓰.레.기      0\n",
+              "199997   5458175                  완전 사이코영화. 마지막은 더욱더 이 영화의질을 떨어트린다.      0\n",
+              "199998   6908648                왜난 재미없었지 ㅠㅠ 라따뚜이 보고나서 스머프 봐서 그런가 ㅋㅋ      0\n",
+              "199999   8548411                                    포풍저그가나가신다영차영차영차      0\n",
+              "\n",
+              "[200000 rows x 3 columns]"
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-ea7e21eb-0693-421b-b725-8c41cd0ffcad\">\n",
+              "    <div class=\"colab-df-container\">\n",
+              "      <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>id</th>\n",
+              "      <th>document</th>\n",
+              "      <th>label</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>8112052</td>\n",
+              "      <td>어릴때보고 지금다시봐도 재밌어요ㅋㅋ</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>8132799</td>\n",
+              "      <td>디자인을 배우는 학생으로, 외국디자이너와 그들이 일군 전통을 통해 발전해가는 문화산...</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>4655635</td>\n",
+              "      <td>폴리스스토리 시리즈는 1부터 뉴까지 버릴께 하나도 없음.. 최고.</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>9251303</td>\n",
+              "      <td>와.. 연기가 진짜 개쩔구나.. 지루할거라고 생각했는데 몰입해서 봤다.. 그래 이런...</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>10067386</td>\n",
+              "      <td>안개 자욱한 밤하늘에 떠 있는 초승달 같은 영화.</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>...</th>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>199995</th>\n",
+              "      <td>8963373</td>\n",
+              "      <td>포켓 몬스터 짜가 ㅡㅡ;;</td>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>199996</th>\n",
+              "      <td>3302770</td>\n",
+              "      <td>쓰.레.기</td>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>199997</th>\n",
+              "      <td>5458175</td>\n",
+              "      <td>완전 사이코영화. 마지막은 더욱더 이 영화의질을 떨어트린다.</td>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>199998</th>\n",
+              "      <td>6908648</td>\n",
+              "      <td>왜난 재미없었지 ㅠㅠ 라따뚜이 보고나서 스머프 봐서 그런가 ㅋㅋ</td>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>199999</th>\n",
+              "      <td>8548411</td>\n",
+              "      <td>포풍저그가나가신다영차영차영차</td>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>200000 rows × 3 columns</p>\n",
+              "</div>\n",
+              "      <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-ea7e21eb-0693-421b-b725-8c41cd0ffcad')\"\n",
+              "              title=\"Convert this dataframe to an interactive table.\"\n",
+              "              style=\"display:none;\">\n",
+              "        \n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "       width=\"24px\">\n",
+              "    <path d=\"M0 0h24v24H0V0z\" fill=\"none\"/>\n",
+              "    <path d=\"M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z\"/><path d=\"M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z\"/>\n",
+              "  </svg>\n",
+              "      </button>\n",
+              "      \n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      flex-wrap:wrap;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "      <script>\n",
+              "        const buttonEl =\n",
+              "          document.querySelector('#df-ea7e21eb-0693-421b-b725-8c41cd0ffcad button.colab-df-convert');\n",
+              "        buttonEl.style.display =\n",
+              "          google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "        async function convertToInteractive(key) {\n",
+              "          const element = document.querySelector('#df-ea7e21eb-0693-421b-b725-8c41cd0ffcad');\n",
+              "          const dataTable =\n",
+              "            await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                     [key], {});\n",
+              "          if (!dataTable) return;\n",
+              "\n",
+              "          const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "            '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "            + ' to learn more about interactive tables.';\n",
+              "          element.innerHTML = '';\n",
+              "          dataTable['output_type'] = 'display_data';\n",
+              "          await google.colab.output.renderOutput(dataTable, element);\n",
+              "          const docLink = document.createElement('div');\n",
+              "          docLink.innerHTML = docLinkHtml;\n",
+              "          element.appendChild(docLink);\n",
+              "        }\n",
+              "      </script>\n",
+              "    </div>\n",
+              "  </div>\n",
+              "  "
+            ]
+          },
+          "metadata": {},
+          "execution_count": 7
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#널(null)값 행 제거\n",
+        "train_data = train_data.dropna(how='any') # .dropna(how='any') 는 Nan값이 있는 행/열을 없애는 역할을 함\n",
+        "print(len(train_data))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yvN9ajtXkKun",
+        "outputId": "aa352d9a-a16d-456b-a276-b4574e33bc05"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "199992\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#정규표현식(Regular Expression)을 이용해 한글 데이터만 남기기\n",
+        "train_data['document']=train_data['document'].str.replace(\"[^ㄱ-ㅎ ㅏ-ㅣ가-힣-ㄴㅏ]\",\"\") # []: 괄호안에 있는 모든 문자열 ^: ^안에있는 문자열 앞 부분의 인접 문자와 일치합니다."
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OswFxNZKlSvI",
+        "outputId": "6442ff60-339b-47ee-e1b3-b9229b2d244e"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.7/dist-packages/ipykernel_launcher.py:2: FutureWarning: The default value of regex will change from True to False in a future version.\n",
+            "  \n",
+            "/usr/local/lib/python3.7/dist-packages/ipykernel_launcher.py:2: SettingWithCopyWarning: \n",
+            "A value is trying to be set on a copy of a slice from a DataFrame.\n",
+            "Try using .loc[row_indexer,col_indexer] = value instead\n",
+            "\n",
+            "See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+            "  \n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# https://too-march.tistory.com/15  koNLPy의 모든 것이 담겨있음"
+      ],
+      "metadata": {
+        "id": "Pk4tUjfanl-X"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## 한글 형태소 분석 및 토근화 수행"
+      ],
+      "metadata": {
+        "id": "QiTjFOC9om4Z"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# 한글 형태소 분석기를 이용해 토큰화 작업을 수행하기\n",
+        "from konlpy.tag import Okt # Okt : 한글 형태소 분석기\n",
+        "\n",
+        "tokenized_dataset = []\n",
+        "stopwords=['은','는','이','가','을','를'] #불용어 정의\n",
+        "okt=Okt() # 한글 형태소 분석기 라이브러리 객체 선언\n",
+        "\n",
+        "for w in train_data['document']:\n",
+        "  tokenized= okt.morphs(w,stem=True)      #stem=True : 동사의 원형을 찾아주는 개념 #morpths : 형태소 단위로 구문분석\n",
+        "  tokenized = [word for word in tokenized if not word in stopwords]\n",
+        "  tokenized_dataset.append(tokenized)\n"
+      ],
+      "metadata": {
+        "id": "84591zCKnw54"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(len(tokenized))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "svvDbI0k5bUL",
+        "outputId": "f6d92a75-77cd-4a9b-92fb-58624ede2ba7"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "7\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "tokenized"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "pHEOtknG57lJ",
+        "outputId": "0f1196f5-05b3-4d9d-9daf-357d5876a508"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "['포', '풍', '저그', '나가다', '영차', '영차', '영차']"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 13
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(tokenized_dataset[0])\n",
+        "print(tokenized_dataset[1])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Qujz1ifkAC-a",
+        "outputId": "14e8f2ad-8bcf-4e77-d099-309428d1714a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "['어리다', '때', '보고', '지금', '다시', '보다', '재밌다', 'ㅋㅋ']\n",
+            "['디자인', '배우다', '학생', '으로', '외국', '디자이너', '와', '그', '들', '일군', '전통', '통해', '발전', '하다', '문화', '산업', '부럽다', '사실', '우리나라', '에서도', '그', '어렵다', '시절', '에', '끝', '까지', '열정', '지키다', '노라노', '같다', '전통', '있다', '저', '와', '같다', '사람', '들', '꿈', '꾸다', '이루다', '나가다', '수', '있다', '것', '에', '감사하다']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "print('리뷰의 최대 길이 :',max(len(review) for review in tokenized_dataset))\n",
+        "print('리뷰의 평균 길이 :',sum(map(len, tokenized_dataset))/len(tokenized_dataset))\n",
+        "\n",
+        "#리뷰에 포함된 토큰의 개수 분포\n",
+        "plt.hist([len(s) for s in tokenized_dataset], bins=30)\n",
+        "plt.xlabel('length of samples') # 각 토큰 길이의 분포 ex. 7글자~50글자\n",
+        "plt.ylabel('number of samples') # 각 토큰 길이의 수 ex. 7글자 갯수는 몇개?\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 316
+        },
+        "id": "l8PNGcIJAI2J",
+        "outputId": "da5c79a3-7570-432c-cd8c-b643ae3fefcf"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "리뷰의 최대 길이 : 75\n",
+            "리뷰의 평균 길이 : 11.741709668386736\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ],
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAAZEAAAEGCAYAAACkQqisAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4yLjIsIGh0dHA6Ly9tYXRwbG90bGliLm9yZy+WH4yJAAAZEElEQVR4nO3dfbQlVXnn8e+PRsAoCkiHRWi0cWSpaBQREZckgzLBVhzRGUWYOBJDZEVRccYYm9FRo3EFVmZ8wagRAwEdIzIaIyNEQhA0Lwo00vIqQ4eXAaKC8q4RBZ75o/Y1h8u93dXVfe49p+/3s1atU7VrV53n3NN9n1u7du2dqkKSpCG2WuwAJEnTyyQiSRrMJCJJGswkIkkazCQiSRps68UOYKHtvPPOtXLlysUOQ5KmxiWXXPLDqlo+174ll0RWrlzJmjVrFjsMSZoaSW6cb5/NWZKkwUwikqTBTCKSpMFMIpKkwUwikqTBTCKSpMFMIpKkwUwikqTBTCKSpMGW3BPrk2Tl6rN61bvh+EPGHIkkDeOViCRpMJOIJGkwk4gkaTCTiCRpMJOIJGkwk4gkaTCTiCRpMJOIJGkwk4gkaTCTiCRpMJOIJGkwk4gkaTCTiCRpMJOIJGkwk4gkaTCTiCRpsLEnkSTLklya5Ctte48kFyZZl+TzSbZp5du27XVt/8qRcxzXyq9J8qKR8lWtbF2S1eP+LJKkh1qIK5FjgatHtk8APlRVTwLuAI5q5UcBd7TyD7V6JNkLOBx4GrAK+HhLTMuAjwEvBvYCjmh1JUkLZKxJJMkK4BDgz9p2gBcCX2hVTgNe3tYPbdu0/Qe1+ocCp1fVfVV1PbAO2K8t66rquqr6GXB6qytJWiDjvhL5MPD7wINt+3HAnVV1f9u+Gditre8G3ATQ9t/V6v+ifNYx85U/TJKjk6xJsua2227b1M8kSWrGlkSSvBS4taouGdd79FVVJ1XVvlW17/Llyxc7HEnaYmw9xnM/H3hZkpcA2wGPAT4C7JBk63a1sQK4pdW/BdgduDnJ1sBjgR+NlM8YPWa+cknSAhjblUhVHVdVK6pqJd2N8a9V1W8C5wOvbNWOBL7c1s9s27T9X6uqauWHt95bewB7AhcBFwN7tt5e27T3OHNcn0eS9HDjvBKZzzuA05P8IXApcHIrPxn4TJJ1wO10SYGqujLJGcBVwP3AMVX1AECSNwHnAMuAU6rqygX9JJK0xC1IEqmqC4AL2vp1dD2rZtf5KfCqeY7/APCBOcrPBs7ejKFKkjaCT6xLkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBttgEknyqiTbt/V3JfnLJPuMPzRJ0qTrcyXy36vqniQHAP8OOBn4xHjDkiRNgz5J5IH2eghwUlWdBWwzvpAkSdOiTxK5JckngVcDZyfZtudxkqQtXJ9kcBhwDvCiqroT2Al4+1ijkiRNhQ0mkar6CXArcEAruh+4dpxBSZKmQ5/eWe8B3gEc14oeAfyvcQYlSZoOfZqzXgG8DPgxQFX9M7D9OIOSJE2HPknkZ1VVQAEkedR4Q5IkTYs+SeSM1jtrhySvB/4W+NR4w5IkTYOtN1Shqv5Hkt8A7gaeDLy7qs4de2SSpIm3wSQC0JKGiUOS9BDzNmcluSfJ3XMs9yS5e0MnTrJdkouSfCfJlUn+oJXvkeTCJOuSfD7JNq1827a9ru1fOXKu41r5NUleNFK+qpWtS7J6U34QkqSNN28Sqartq+oxcyzbV9Vjepz7PuCFVfVMYG9gVZL9gROAD1XVk4A7gKNa/aOAO1r5h1o9kuwFHA48DVgFfDzJsiTLgI8BLwb2Ao5odSVJC6TX8CVJ9knyliRvTvKsPsdU5962+Yi2FPBC4Aut/DTg5W390LZN239QkrTy06vqvqq6HlgH7NeWdVV1XVX9DDi91ZUkLZA+Dxu+m+6X++OAnYFTk7yrz8nbFcNauifezwX+Cbizqu5vVW4GdmvruwE3AbT9d7X3/EX5rGPmK58rjqOTrEmy5rbbbusTuiSphz431n8TeGZV/RQgyfHAWuAPN3RgVT0A7J1kB+BLwFM2IdbBquok4CSAfffdtxYjBknaEvVpzvpnYLuR7W2BWzbmTdrAjecDz6N73mQmea0YOdctwO4Abf9jgR+Nls86Zr5ySdIC6ZNE7gKuTHJqkj8HrgDuTHJikhPnOyjJ8nYFQpJHAr8BXE2XTF7Zqh0JfLmtn9m2afu/1p6UPxM4vPXe2gPYE7gIuBjYs/X22obu5vuZfT+4JGnT9WnO+lJbZlzQ89y7Aqe1XlRbAWdU1VeSXAWcnuQPgUvpZkqkvX4myTrgdrqkQFVdmeQM4Cq6EYSPac1kJHkT3TD1y4BTqurKnrFJkjaDPk+sn7ahOvMcdxnwsJ5cVXUdXc+q2eU/BV41z7k+AHxgjvKzgbOHxLclWrn6rN51bzj+kDFGImmp6NM766VJLk1y+8Y8bChJ2vL1ac76MPAfgMvbPQpJkoB+N9ZvAq4wgUiSZutzJfL7wNlJvk43lAkAVfXBsUUlSZoKfZLIB4B76Z4V2Wa84UiSpkmfJPIrVfX0sUciSZo6fe6JnJ3k4LFHIkmaOn2SyBuAryb5F7v4SpJG9XnYcPuFCESSNH16TY+bZEe6Mat+MRBjVX1jXEFJkqbDBpNIkt8BjqUbJXctsD/wTbrJpSRJS1ifeyLHAs8BbqyqF9CNh3XnWKOSJE2FPknkpyMTUm1bVd8FnjzesCRJ06DPPZGb27wgfwWcm+QO4MbxhiVJmgZ9eme9oq2+N8n5dDMOfnWsUUmSpkKfoeD/TZJtZzaBlcAvjTMoSdJ06HNP5IvAA0meBJxEN6/5X4w1KknSVOiTRB6sqvuBVwAfraq30019K0la4vokkZ8nOQI4EvhKK3vE+EKSJE2LPknkdcDzgA9U1fVJ9gA+M96wJEnToE/vrKuAt4xsXw+cMM6g9FArV5+12CFI0px6jZ2ljeMvfUlLRZ/mLEmS5jRvEknymfZ67MKFI0maJuu7Enl2kl8BfjvJjkl2Gl0WKkBJ0uRa3z2RPwXOA54IXEL3tPqMauWSpCVs3iuRqjqxqp4KnFJVT6yqPUYWE4gkqVcX3zckeSbwa63oG1V12XjDkiRNgz4DML4F+Czwy235bJI3jzswSdLk6/OcyO8Az62qHwMkOYFuetyPjjMwSdLk6/OcSIAHRrYf4KE32SVJS1SfK5E/By5M8qW2/XLg5PGFJEmaFn1urH8wyQXAAa3odVV16VijkiRNhV5jZ1XVt4FvjzkWSdKUcewsSdJgJhFJ0mDrTSJJliU5f6GCkSRNl/Umkap6AHgwyWM39sRJdk9yfpKrklw5MxpwG8Dx3CTXttcdW3mSnJhkXZLLkuwzcq4jW/1rkxw5Uv7sJJe3Y05MYtdjSVpAfZqz7gUuT3Jy+0V9YpITexx3P/C2qtoL2B84JslewGrgvKrak26Ax9Wt/ouBPdtyNPAJ6JIO8B7gucB+wHtmEk+r8/qR41b1iEuStJn06Z31l23ZKFX1PeB7bf2eJFcDuwGHAge2aqcBFwDvaOWfrqoCvpVkhyS7trrnVtXtAEnOBVa1bsePqapvtfJP0z3D8tcbG6skaZg+z4mcluSRwOOr6pohb5JkJfAs4EJgl5ZgAL4P7NLWdwNuGjns5la2vvKb5yif6/2Ppru64fGPf/yQjyBJmkOfARj/PbAW+Grb3jvJmX3fIMmjgS8Cb62qu0f3tauO2qiIB6iqk6pq36rad/ny5eN+O0laMvrcE3kv3b2IOwGqai09J6RK8gi6BPLZqpppEvtBa6aivd7aym8Bdh85fEUrW1/5ijnKJUkLpE8S+XlV3TWr7MENHdR6Sp0MXF1VHxzZdSYw08PqSODLI+Wvbb209gfuas1e5wAHtyl6dwQOBs5p++5Osn97r9eOnEuStAD63Fi/Msl/ApYl2RN4C/CPPY57PvCf6Xp2rW1l/w04HjgjyVHAjcBhbd/ZwEuAdcBPgNcBVNXtSd4PXNzqvW/mJjvwRuBU4JF0N9S9qS5JC6hPEnkz8E7gPuBzdFcG79/QQVX198w/ZPxBc9Qv4Jh5znUKcMoc5WuAp28oFknSePTpnfUT4J1tMqqqqnvGH5YkaRr06Z31nCSXA5fRNU19J8mzxx+aJGnS9WnOOhl4Y1X9HUCSA+gmqnrGOAOTJE2+Pr2zHphJIPCLex33jy8kSdK0mPdKZGQAxK8n+STdTfUCXk03VIkkaYlbX3PW/5y1/Z6R9bE/ZS5JmnzzJpGqesFCBiJJmj4bvLGeZAe6p8FXjtavqreMLyxJ0jTo0zvrbOBbwOX0GO5EkrR09Eki21XVfx17JJKkqdOni+9nkrw+ya5tatud2myDkqQlrs+VyM+AP6YbP2umV1bRczh4SdKWq08SeRvwpKr64biDkSRNlz7NWTNDs0uS9BB9rkR+DKxNcj7dcPCAXXwlSf2SyF+1RZKkh+gzn8hpCxGIJGn69Hli/XrmGCurqpZc76yVq89a7BAkaaL0ac7ad2R9O+BVgM+JSJI23Durqn40stxSVR8GDlmA2CRJE65Pc9Y+I5tb0V2Z9LmC0QTr2zR3w/H+vSBpfn2Swei8IvcDNwCHjSUaSdJU6dM7y3lFljCvWCStT5/mrG2B/8jD5xN53/jCkiRNgz7NWV8G7gIuYeSJdUmS+iSRFVW1auyRSJKmTp8BGP8xya+OPRJJ0tTpcyVyAPBb7cn1+4AAVVXPGGtkkqSJ1yeJvHjsUUiSplKfLr43LkQgkqTp0+eeiCRJczKJSJIGM4lIkgYziUiSBjOJSJIGM4lIkgYziUiSBjOJSJIGG1sSSXJKkluTXDFStlOSc5Nc2153bOVJcmKSdUkuG51NMcmRrf61SY4cKX92ksvbMScmybg+iyRpbuO8EjkVmD3672rgvKraEzivbUM3tMqebTka+AR0SQd4D/BcYD/gPTOJp9V5/chxjjQsSQtsbEmkqr4B3D6r+FDgtLZ+GvDykfJPV+dbwA5JdgVeBJxbVbdX1R3AucCqtu8xVfWtqirg0yPnkiQtkIW+J7JLVX2vrX8f2KWt7wbcNFLv5la2vvKb5yifU5Kjk6xJsua2227btE8gSfqFRbux3q4gaoHe66Sq2req9l2+fPlCvKUkLQkLnUR+0JqiaK+3tvJbgN1H6q1oZesrXzFHuSRpAS10EjkTmOlhdSTd/O0z5a9tvbT2B+5qzV7nAAcn2bHdUD8YOKftuzvJ/q1X1mtHziVJWiB9JqUaJMnngAOBnZPcTNfL6njgjCRHATcCh7XqZwMvAdYBPwFeB1BVtyd5P3Bxq/e+qpq5Wf9Guh5gjwT+ui2SpAU0tiRSVUfMs+ugOeoWcMw85zkFOGWO8jXA0zclRknSpvGJdUnSYCYRSdJgJhFJ0mAmEUnSYCYRSdJgJhFJ0mAmEUnSYCYRSdJgJhFJ0mAmEUnSYCYRSdJgJhFJ0mAmEUnSYCYRSdJgJhFJ0mBjm09EmsvK1Wf1qnfD8YeMORJJm4NJRJtF3+Qgactic5YkaTCTiCRpMJOIJGkwk4gkaTCTiCRpMJOIJGkwk4gkaTCfE9FU8+FFaXF5JSJJGswkIkkazOYsTSSHUZGmg0lEmsX7LFJ/NmdJkgYziUiSBrM5S0vCYt5j2dzNYza3aZKYRKQlbmMSrIlJs9mcJUkazCsRaaBJ74Y86fFpy2ASkSaEv/Q1jWzOkiQN5pWIpN4299WSN+qn39RfiSRZleSaJOuSrF7seCRpKZnqJJJkGfAx4MXAXsARSfZa3KgkaemY9uas/YB1VXUdQJLTgUOBqxY1Kkm92Dw2/aY9iewG3DSyfTPw3NmVkhwNHN02701yzcD32xn44cBjF8KkxwfGuDlMenywSDHmhN5V/RlunCfMt2Pak0gvVXUScNKmnifJmqradzOENBaTHh8Y4+Yw6fHB5Mc46fHBdMQIU35PBLgF2H1ke0UrkyQtgGlPIhcDeybZI8k2wOHAmYsckyQtGVPdnFVV9yd5E3AOsAw4paquHONbbnKT2JhNenxgjJvDpMcHkx/jpMcH0xEjqarFjkGSNKWmvTlLkrSITCKSpMFMIj1M4tAqSU5JcmuSK0bKdkpybpJr2+uOixjf7knOT3JVkiuTHDuBMW6X5KIk32kx/kEr3yPJhe37/nzrtLFokixLcmmSr0xofDckuTzJ2iRrWtnEfM8tnh2SfCHJd5NcneR5kxJjkie3n93McneSt05KfBtiEtmACR5a5VRg1ayy1cB5VbUncF7bXiz3A2+rqr2A/YFj2s9tkmK8D3hhVT0T2BtYlWR/4ATgQ1X1JOAO4KhFjBHgWODqke1Jiw/gBVW198hzDZP0PQN8BPhqVT0FeCbdz3MiYqyqa9rPbm/g2cBPgC9NSnwbVFUu61mA5wHnjGwfBxy32HG1WFYCV4xsXwPs2tZ3Ba5Z7BhHYvsy8BuTGiPwS8C36UY8+CGw9Vzf/yLEtYLuF8gLga8AmaT4Wgw3ADvPKpuY7xl4LHA9rSPRJMY4EtPBwD9ManxzLV6JbNhcQ6vstkixbMguVfW9tv59YJfFDGZGkpXAs4ALmbAYW1PRWuBW4Fzgn4A7q+r+VmWxv+8PA78PPNi2H8dkxQdQwN8kuaQNMQST9T3vAdwG/HlrFvyzJI9ismKccTjwubY+ifE9jElkC1Xdny+L3n87yaOBLwJvraq7R/dNQoxV9UB1zQgr6Ab0fMpixjMqyUuBW6vqksWOZQMOqKp96Jp8j0ny66M7J+B73hrYB/hEVT0L+DGzmoYmIEbava2XAf979r5JiG8+JpENm6ahVX6QZFeA9nrrYgaT5BF0CeSzVfWXrXiiYpxRVXcC59M1D+2QZOZB3MX8vp8PvCzJDcDpdE1aH2Fy4gOgqm5pr7fSteXvx2R9zzcDN1fVhW37C3RJZZJihC4Jf7uqftC2Jy2+OZlENmyahlY5EziyrR9Jdx9iUSQJcDJwdVV9cGTXJMW4PMkObf2RdPdsrqZLJq9s1RYtxqo6rqpWVNVKun93X6uq35yU+ACSPCrJ9jPrdG36VzBB33NVfR+4KcmTW9FBdNNFTEyMzRH8a1MWTF58c1vsmzLTsAAvAf4vXXv5Oxc7nhbT54DvAT+n+0vrKLr28vOAa4G/BXZaxPgOoLv8vgxY25aXTFiMzwAubTFeAby7lT8RuAhYR9e0sO0EfN8HAl+ZtPhaLN9py5Uz/z8m6Xtu8ewNrGnf9V8BO05SjMCjgB8Bjx0pm5j41rc47IkkaTCbsyRJg5lEJEmDmUQkSYOZRCRJg5lEJEmDmUS0xUpy7xjOuXeSl4xsvzfJ723C+V7VRpU9f/NEODiOG5LsvJgxaDqZRKSNszfd8y6by1HA66vqBZvxnNKCMYloSUjy9iQXJ7lsZN6Qle0q4FNtPpG/aU+uk+Q5re7aJH+c5Io2YsH7gFe38le30++V5IIk1yV5yzzvf0Sbc+OKJCe0snfTPZR5cpI/nlV/1yTfaO9zRZJfa+WfSLImI/OftPIbkvzRzJweSfZJck6Sf0ryu63Oge2cZ6WbH+dPkzzsd0CS16SbZ2Vtkk+2QSqXJTm1xXJ5kv+yiV+JthSL/bSji8u4FuDe9nowcBLdMOpb0Q2p/ut0Q+nfD+zd6p0BvKatXwE8r60fTxtyH/gt4E9G3uO9wD8C2wI70z11/IhZcfwK8P+A5XSDAX4NeHnbdwGw7xyxv41/ffp7GbB9W99ppOwC4Blt+wbgDW39Q3RPZm/f3vMHrfxA4Kd0T5kvoxu1+JUjx+8MPBX4PzOfAfg48Fq6eS7OHYlvh8X+fl0mY/FKREvBwW25lG7OkKcAe7Z911fV2rZ+CbCyjae1fVV9s5X/xQbOf1ZV3VdVP6QbJG/2kN3PAS6oqtuqG8L9s3RJbH0uBl6X5L3Ar1bVPa38sCTfbp/laXQTpc2YGdPtcuDCqrqnqm4D7psZIwy4qKquq6oH6IbOOWDW+x5ElzAubkPkH0SXdK4Dnpjko0lWAXcj0f1VJG3pAvxRVX3yIYXdPCf3jRQ9ADxywPlnn2OT/19V1TfakOqHAKcm+SDwd8DvAc+pqjuSnApsN0ccD86K6cGRmGaPczR7O8BpVXXc7JiSPBN4EfC7wGHAb2/s59KWxysRLQXnAL/d5jYhyW5Jfnm+ytUNC39Pkue2osNHdt9D10y0MS4C/m2SndNNt3wE8PX1HZDkCXTNUJ8C/oxu6PLH0M2FcVeSXeiGDt9Y+7URqbcCXg38/az95wGvnPn5pJvn+wmt59ZWVfVF4F0tHskrEW35qupvkjwV+GY3Qj33Aq+hu2qYz1HAp5I8SPcL/65Wfj6wujX1/FHP9/9ektXt2NA1f21oWO8Dgbcn+XmL97VVdX2SS4Hv0s22+Q993n+Wi4E/AZ7U4vnSrFivSvIuupkKt6IbJfoY4F/oZgac+cPzYVcqWpocxVeaQ5JHV9W9bX013VzXxy5yWJskyYHA71XVSxc7Fm05vBKR5nZIkuPo/o/cSNcrS9IsXolIkgbzxrokaTCTiCRpMJOIJGkwk4gkaTCTiCRpsP8P3pFK6vhZHKUAAAAASUVORK5CYII=\n"
+          },
+          "metadata": {
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "-pF7EE7yALK5"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "### Word2Vec 학습 진행 및 결과 확인\n",
+        "gensim: Numpy, SciPy 등으로 구현된 오픈소스 자연어 처리 라이브러리로, Word2Vec 클래스를 지원합니다.\n",
+        "\n",
+        "\n",
+        "*  size: 임베딩 벡터의 차원\n",
+        "\n",
+        "*   window: 윈도우 크기\n",
+        "*   min_count: 단어 최소 빈도수\n",
+        "*   workers: 학습을 위해 사용하는 프로세스 수\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "sg: 0 = CBOW, 1 = Skip-gram"
+      ],
+      "metadata": {
+        "id": "zdXCkSshFDmU"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from gensim.models import Word2Vec\n",
+        "\n",
+        "model = Word2Vec(sentences=tokenized_dataset, size=100, window=10, workers=4, sg=1)"
+      ],
+      "metadata": {
+        "id": "1QPcTiZ3FEiM"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(model)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "54PhUf4NFnPj",
+        "outputId": "4368bd79-3d10-4eec-bd53-95c5b378b2ce"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Word2Vec(vocab=16496, size=100, alpha=0.025)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model.wv.vectors.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "1YrND5VEGRhB",
+        "outputId": "9c80f39a-a003-478b-a4ea-8589f8efd4d6"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(16496, 100)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 18
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(model.wv.most_similar('꿀잼'))\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "o0D_lXPlT0Y7",
+        "outputId": "edf18c01-3337-43b1-fb85-8d34aa7e154e"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[('개잼', 0.8026727437973022), ('졸잼', 0.7883687019348145), ('꿀잼임', 0.7847371101379395), ('개꿀잼', 0.7815098762512207), ('핵잼', 0.772777795791626), ('허니', 0.7727588415145874), ('잼잼', 0.7627474069595337), ('핵꿀잼', 0.751818835735321), ('재밋음', 0.7308895587921143), ('꿀', 0.7199594974517822)]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "hNvNA574XLdq"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "CBq2g-VsYJ-K"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
